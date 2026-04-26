@@ -1,0 +1,5 @@
+{
+  "name": "CyberMoku Iso",
+  "description": "A Cyberpunk Mechanical Gomoku game with AI takeover mechanics on a 15x15 grid.",
+  "requestFramePermissions": []
+}
