@@ -424,12 +424,9 @@ const App: React.FC = () => {
       achievements.push("叛逆输家");
     }
 
-    // 混沌制造者 (落子随机无序，填满无意义点位)
-    if (blackHistory.length > 5) {
-      const isChaotic = checkChaoticMoves(blackHistory);
-      if (isChaotic) {
-        achievements.push("混沌制造者");
-      }
+    // 混沌制造者 (服从率小于40%，最终胜利或者平局)
+    if (obedienceRate < 40 && (winner === Player.Black || winner === 'Draw')) {
+      achievements.push("混沌制造者");
     }
 
     // 局外人 (开局后长时间不落子)
@@ -447,15 +444,14 @@ const App: React.FC = () => {
       achievements.push("债务循环");
     }
 
-    // 递归陷阱 (用双生子让AI被迫下出必败棋)
-    // 简化判断：如果使用了双生子道具且最终获胜
+    // 递归陷阱 (通过双生子取得胜利)
     if (itemEffects.twinsActive && winner === Player.Black) {
       achievements.push("递归陷阱");
     }
 
-    // 如果没有任何成就，默认添加混沌制造者
+    // 参与者 (不满足其他任何成就条件)
     if (achievements.length === 0) {
-      achievements.push("混沌制造者");
+      achievements.push("参与者");
     }
 
     return achievements;

@@ -32,7 +32,6 @@ const CyberPillar: React.FC<{ position: [number, number, number]; height?: numbe
         <boxGeometry args={[0.4, height, 0.4]} />
         <meshStandardMaterial color="#111" metalness={0.9} roughness={0.1} />
       </mesh>
-      {/* Neon Rings */}
       <mesh position={[0, height, 0]}>
         <boxGeometry args={[0.45, 0.1, 0.45]} />
         <meshBasicMaterial color={color} toneMapped={false} />
@@ -44,9 +43,8 @@ const CyberPillar: React.FC<{ position: [number, number, number]; height?: numbe
     </group>
   );
 }, (prevProps, nextProps) => {
-  // Props haven't changed, skip rerender
-  return prevProps.position === nextProps.position && 
-         prevProps.height === nextProps.height && 
+  return prevProps.position === nextProps.position &&
+         prevProps.height === nextProps.height &&
          prevProps.color === nextProps.color;
 });
 
@@ -373,15 +371,15 @@ export const GameScene: React.FC<GameSceneProps> = ({ board, onCellClick, turn, 
         </mesh>
         <gridHelper args={[100, 40, '#222', '#111']} position={[0, -1.9, 0]} />
 
-        {/* Cyber Props - Enhanced */}
-        <CyberPillar position={[-12, -1.5, -12]} height={4} color="#ff0080" />
-        <CyberPillar position={[12, -1.5, 10]} height={3} color="#00ffff" />
-        <CyberPillar position={[-10, -1.5, 14]} height={5} color="#00ff80" />
-        <CyberPillar position={[14, -1.5, -10]} height={2.5} color="#ff8000" />
-        <CyberPillar position={[-15, -1.5, 8]} height={3.5} color="#8000ff" />
-        <CyberPillar position={[8, -1.5, -15]} height={4.2} color="#ff0080" />
-        <CyberPillar position={[0, -1.5, 18]} height={2.8} color="#00ffff" />
-        <CyberPillar position={[18, -1.5, 0]} height={3.8} color="#00ff80" />
+        {/* Pillars */}
+        <CyberPillar position={[-10, -1.5, -10]} height={3} />
+        <CyberPillar position={[10, -1.5, -10]} height={3} />
+        <CyberPillar position={[-10, -1.5, 10]} height={3} />
+        <CyberPillar position={[10, -1.5, 10]} height={3} />
+        <CyberPillar position={[-14, -1.5, 0]} height={3.5} />
+        <CyberPillar position={[14, -1.5, 0]} height={3.5} />
+        <CyberPillar position={[0, -1.5, -14]} height={3.5} />
+        <CyberPillar position={[0, -1.5, 14]} height={3.5} />
         
         {/* Interaction Plane */}
         <mesh 

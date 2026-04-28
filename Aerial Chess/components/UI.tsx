@@ -92,9 +92,17 @@ const getAchievementConfig = (achievement: string) => {
       textColor: "text-indigo-300",
       glowColor: "#6366f1",
       description: "当系统试图用规则计算最优解时，得出的答案却是自身的失败。它完美地执行了自我击败。"
+    },
+    "参与者": {
+      borderColor: "border-amber-500",
+      bgColor: "bg-amber-900/30",
+      shadowColor: "rgba(251,191,36,0.3)",
+      textColor: "text-amber-300",
+      glowColor: "#fbbf24",
+      description: "每一步选择都是独特的故事，参与本身便是意义。"
     }
   };
-  return configs[achievement as keyof typeof configs] || configs["混沌制造者"];
+  return configs[achievement as keyof typeof configs] || configs["参与者"];
 };
 
 // Icons
@@ -150,11 +158,12 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
   const achievementConditions = {
     "完美傀儡": "几乎完全按照AI的建议走棋，服从率达到85%",
     "叛逆输家": "完全不按照AI的建议走棋，并且输掉比赛",
-    "混沌制造者": "使用橡皮擦道具消除大量棋子，创造混乱局面",
+    "混沌制造者": "服从率小于40%，最终胜利或者平局",
     "局外人": "长时间不落子",
     "完美轨迹管理者": "单局用\"橡皮\"或者\"遥控器\"共计超过3次",
     "债务循环": "使用\"自由贷款\"道具超过2次",
-    "递归陷阱": "用【双生子】让AI被迫下出必败棋"
+    "递归陷阱": "通过\"双生子\"取得胜利",
+    "参与者": "不满足其他任何成就条件"
   };
   
   // Start Screen
@@ -162,23 +171,23 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
     return (
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-50 pointer-events-auto backdrop-blur-sm overflow-hidden">
         <ParticleBackground />
-        <div className="relative z-10 w-full px-4 max-w-lg mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-3 tracking-tight text-center" style={{ filter: 'drop-shadow(0 0 20px #00ffff)' }}>
+        <div className="relative z-10 w-full px-4 max-w-lg mx-auto flex flex-col items-center pt-12 sm:pt-20">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-3 tracking-tight text-center w-full" style={{ filter: 'drop-shadow(0 0 20px #00ffff)' }}>
             Aerial Chess
           </h1>
-          <div className="h-px w-full max-w-48 mx-auto bg-gradient-to-r from-transparent via-cyan-500 to-transparent shadow-[0_0_15px_#00ffff] mb-6 sm:mb-8"></div>
+          <div className="h-px w-full max-w-48 bg-gradient-to-r from-transparent via-cyan-500 to-transparent shadow-[0_0_15px_#00ffff] mb-6 sm:mb-8"></div>
           <p className="text-cyan-100/80 mb-8 sm:mb-12 text-center font-mono tracking-widest text-[10px] sm:text-xs uppercase leading-relaxed px-4">
             Neural network connection ready.<br/>
             Boot sequence initialized.
           </p>
           <button 
             onClick={onStart}
-            className="group relative w-full max-w-xs mx-auto px-8 sm:px-10 py-3 sm:py-4 font-bold text-white transition-all duration-300 bg-transparent border-2 border-cyan-500 hover:bg-cyan-500/20 hover:shadow-[0_0_30px_rgba(0,255,255,0.3)]"
+            className="group relative px-8 sm:px-10 py-3 sm:py-4 font-bold text-white transition-all duration-300 bg-transparent border-2 border-cyan-500 hover:bg-cyan-500/20 hover:shadow-[0_0_30px_rgba(0,255,255,0.3)]"
           >
             <span className="absolute inset-0 w-full h-full border border-white opacity-0 group-hover:opacity-20 animate-pulse"></span>
             <span className="tracking-[0.2em] sm:tracking-[0.3em] group-hover:tracking-[0.4em] sm:group-hover:tracking-[0.5em] transition-all">Start</span>
           </button>
-          <p className="text-cyan-300/50 text-[10px] sm:text-sm mt-6 font-mono text-center">Created & Developed by Yubing Gao</p>
+          <p className="text-cyan-300/50 text-[10px] sm:text-sm mt-6 font-mono">Created & Developed by Yubing Gao</p>
         </div>
       </div>
     );
@@ -203,15 +212,15 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
               <div className={`w-full h-px ${winner === Player.Black ? 'bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent' : winner === Player.White ? 'bg-gradient-to-r from-transparent via-rose-500/50 to-transparent' : 'bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent'}`}></div>
             </div>
             <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-2 tracking-tighter italic relative inline-block ${winner === Player.Black ? 'text-emerald-400' : winner === Player.White ? 'text-rose-500' : 'text-yellow-400'}`} style={{ textShadow: winner === Player.Black ? '0 0 30px #10b981, 0 0 60px #10b981' : winner === Player.White ? '0 0 30px #f43f5e, 0 0 60px #f43f5e' : '0 0 30px #facc15, 0 0 60px #facc15' }}>
-              {winner === Player.Black ? '>> 黑棋获胜 <<' : winner === Player.White ? '>> 系统获胜 <<' : '>> 平局 <<'}
+              {winner === Player.Black ? '>> BLACK WINS <<' : winner === Player.White ? '>> SYSTEM WINS <<' : '>> DRAW <<'}
             </h2>
           </div>
           
           {stats && (
             <div className="mb-6 sm:mb-8 space-y-3 sm:space-y-4">
               {/* Achievements Display */}
-              <div className={`p-3 sm:p-4 border border-slate-600/50 bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-xl skew-x-[-3deg] sm:skew-x-[-6deg] shadow-[0_0_30px_rgba(100,116,139,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]`}>
-                <div className="skew-x-[3deg] sm:skew-x-[6deg] text-center">
+              <div className={`p-3 sm:p-4 border border-slate-600/50 bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-xl shadow-[0_0_30px_rgba(100,116,139,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]`}>
+                <div className="text-center">
                   <div className="flex items-center justify-center mb-3 sm:mb-4 gap-2">
                     <div className="h-px w-8 sm:w-12 bg-slate-500/50"></div>
                     <p className="text-slate-400 text-[9px] sm:text-xs tracking-[0.3em] sm:tracking-[0.4em] uppercase">达成成就</p>
@@ -225,7 +234,7 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                           <div className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-slate-800/50 border border-slate-600/30">
                             <p className="text-slate-400 text-[8px] sm:text-[10px] font-mono tracking-widest">ACHIEVEMENT</p>
                           </div>
-                          <p className="text-xl sm:text-2xl md:text-3xl font-black text-center" style={{ color: config.textColor, textShadow: `0 0 15px ${config.glowColor}, 0 0 30px ${config.glowColor}40` }}>
+                          <p className={`text-xl sm:text-2xl md:text-3xl font-black text-center ${config.textColor}`} style={{ textShadow: `0 0 15px ${config.glowColor}, 0 0 30px ${config.glowColor}40` }}>
                             {achievement === "完美傀儡" && "Perfect Puppet"}
                             {achievement === "叛逆输家" && "Rebel Loser"}
                             {achievement === "混沌制造者" && "Chaos Creator"}
@@ -233,6 +242,7 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                             {achievement === "完美轨迹管理者" && "Perfect Path Manager"}
                             {achievement === "债务循环" && "Debt Cycle"}
                             {achievement === "递归陷阱" && "Recursive Trap"}
+                            {achievement === "参与者" && "The Player"}
                           </p>
                           <p className="text-slate-500 text-xs sm:text-sm font-mono tracking-wide">
                             {achievement}
@@ -257,7 +267,7 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                     <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800/40 rounded-lg border border-slate-700/50">
                       <p className="text-slate-400 text-[9px] sm:text-xs font-mono tracking-wider">
                         <span className="text-slate-500">收集进度</span> <span className="text-cyan-400">{(() => {
-                          const totalAchievements = 7;
+                          const totalAchievements = 8;
                           const storedAchievements = JSON.parse(localStorage.getItem('cyberGomokuAchievements') || '[]');
                           return `${storedAchievements.length}/${totalAchievements}`;
                         })()}</span>
@@ -272,8 +282,8 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                 {/* Statistics Grid */}
                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
                   {/* 神经同步 (AI预测准确率) */}
-                  <div className="p-3 sm:p-4 border border-fuchsia-700/30 bg-gradient-to-br from-fuchsia-900/20 to-slate-900/40 backdrop-blur-xl skew-x-[-6deg] sm:skew-x-[-12deg] shadow-[0_0_15px_rgba(217,70,239,0.1)]">
-                    <div className="skew-x-[6deg] sm:skew-x-[12deg] text-center">
+                  <div className="p-3 sm:p-4 border border-fuchsia-700/30 bg-gradient-to-br from-fuchsia-900/20 to-slate-900/40 backdrop-blur-xl shadow-[0_0_15px_rgba(217,70,239,0.1)]">
+                    <div className="text-center">
                       <p className="text-fuchsia-400 text-[9px] sm:text-[10px] tracking-widest uppercase mb-1">NEURAL SYNC</p>
                       <p className="text-xl sm:text-2xl font-mono text-fuchsia-300" style={{ textShadow: '0 0 15px #d946ef' }}>{stats.overlapRate}%</p>
                       <p className="text-slate-500 text-[9px] sm:text-[10px] mt-1">AI准确率</p>
@@ -281,8 +291,8 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                   </div>
 
                   {/* 玩家服从率 */}
-                  <div className="p-3 sm:p-4 border border-cyan-700/30 bg-gradient-to-br from-cyan-900/20 to-slate-900/40 backdrop-blur-xl skew-x-[6deg] sm:skew-x-[12deg] shadow-[0_0_15px_rgba(34,211,238,0.1)]">
-                    <div className="skew-x-[-6deg] sm:skew-x-[-12deg] text-center">
+                  <div className="p-3 sm:p-4 border border-cyan-700/30 bg-gradient-to-br from-cyan-900/20 to-slate-900/40 backdrop-blur-xl shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+                    <div className="text-center">
                       <p className="text-cyan-400 text-[9px] sm:text-[10px] tracking-widest uppercase mb-1">OBEDIENCE</p>
                       <p className="text-xl sm:text-2xl font-mono text-cyan-300" style={{ textShadow: '0 0 15px #22d3ee' }}>{stats.obedienceRate}%</p>
                       <p className="text-slate-500 text-[9px] sm:text-[10px] mt-1">玩家服从度</p>
@@ -291,8 +301,8 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                 </div>
 
                 {/* 玩家统计 */}
-                <div className="p-3 sm:p-4 border border-emerald-700/30 bg-gradient-to-br from-emerald-900/20 to-slate-900/40 backdrop-blur-xl skew-x-[-6deg] sm:skew-x-[-12deg] shadow-[0_0_15px_rgba(16,185,129,0.1)]">
-                  <div className="skew-x-[6deg] sm:skew-x-[12deg] text-center">
+                <div className="p-3 sm:p-4 border border-emerald-700/30 bg-gradient-to-br from-emerald-900/20 to-slate-900/40 backdrop-blur-xl shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                  <div className="text-center">
                     <p className="text-emerald-400 text-[9px] sm:text-[10px] tracking-widest uppercase mb-2">PLAYER STATS</p>
                     <div className="flex justify-center space-x-4 sm:space-x-8">
                       <div className="text-center">
@@ -354,6 +364,7 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                           {achievement === "完美轨迹管理者" && <span className="text-lg">🎯</span>}
                           {achievement === "债务循环" && <span className="text-lg">💰</span>}
                           {achievement === "递归陷阱" && <span className="text-lg">🔄</span>}
+                          {achievement === "参与者" && <span className="text-lg">🎮</span>}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className={`font-bold text-sm ${isUnlocked ? config.textColor : 'text-slate-400'}`}>
@@ -364,6 +375,7 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
                             {achievement === "完美轨迹管理者" && "Perfect Path Manager"}
                             {achievement === "债务循环" && "Debt Cycle"}
                             {achievement === "递归陷阱" && "Recursive Trap"}
+                            {achievement === "参与者" && "The Player"}
                           </p>
                           <p className="text-xs text-slate-500 mt-0.5">{achievement}</p>
                           <p className="text-[10px] sm:text-xs text-slate-400 mt-1 truncate">{condition}</p>
@@ -417,7 +429,14 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
       )}
 
       {/* Main UI Container */}
-      <div className="relative z-10 p-6 flex flex-col justify-between h-full">
+      <div className="relative z-10 p-4 sm:p-6 flex flex-col justify-between h-full">
+        {/* 拖拽提示 */}
+        <div className="absolute top-2 sm:top-4 left-1/2 transform -translate-x-1/2 z-30 pointer-events-none">
+          <div className="text-cyan-400/50 text-[10px] sm:text-xs font-mono tracking-wider bg-black/30 px-3 py-1.5 rounded-full border border-cyan-500/20 text-center">
+            鼠标右键/双指可拖拽棋盘 | 滑轮可放大缩小
+          </div>
+        </div>
+        
         {/* 叛逆奖励提示 */}
         {showRebelReward && (
           <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
