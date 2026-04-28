@@ -156,7 +156,7 @@ export const UI: React.FC<UIProps> = ({ phase, turn, time, winner, onStart, onRe
   
   // Achievement conditions
   const achievementConditions = {
-    "完美傀儡": "几乎完全按照AI的建议走棋，服从率达到85%",
+    "完美傀儡": "几乎完全按照AI的建议走棋，服从率达到80%",
     "叛逆输家": "完全不按照AI的建议走棋，并且输掉比赛",
     "混沌制造者": "服从率小于40%，最终胜利或者平局",
     "局外人": "长时间不落子",

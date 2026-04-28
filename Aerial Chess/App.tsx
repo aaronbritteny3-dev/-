@@ -414,8 +414,8 @@ const App: React.FC = () => {
   const calculateAchievement = (obedienceRate: number, winner: Player | 'Draw' | null, blackHistory: [number, number][], time: number) => {
     const achievements: string[] = [];
 
-    // 完美傀儡 (顺从度>85%)
-    if (obedienceRate > 85) {
+    // 完美傀儡 (顺从度>=80%)
+    if (obedienceRate >= 80) {
       achievements.push("完美傀儡");
     }
 
