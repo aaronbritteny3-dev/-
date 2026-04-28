@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberMoku Iso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body { margin: 0; overflow: hidden; background-color: #05010a; }
+      /* Custom scrollbar for cyberpunk feel if needed */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #05010a; }
+      ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 4px; }
+      
+      @keyframes glitch {
+        0% { transform: translate(0) }
+        20% { transform: translate(-2px, 2px) }
+        40% { transform: translate(-2px, -2px) }
+        60% { transform: translate(2px, 2px) }
+        80% { transform: translate(2px, -2px) }
+        100% { transform: translate(0) }
+      }
+      .glitch-text {
+        animation: glitch 2s infinite linear alternate-reverse;
+      }
+      
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px) }
+        100% { opacity: 1; transform: translateY(0) }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+    </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react": "https://esm.sh/react@18.3.1",
+    "three": "https://esm.sh/three@^0.160.0",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "@react-three/fiber": "https://esm.sh/@react-three/fiber@^8.15.14?external=react,react-dom",
+    "@react-three/drei": "https://esm.sh/@react-three/drei@^9.96.1?external=react,react-dom,@react-three/fiber",
+    "@react-three/postprocessing": "https://esm.sh/@react-three/postprocessing@^2.16.0?external=react,react-dom,@react-three/fiber",
+    "postprocessing": "https://esm.sh/postprocessing@^6.34.1"
+  }
+}
+</script>
+  <script type="module" crossorigin src="./assets/index-ChrEpXcl.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+</body>
+</html>
